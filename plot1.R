@@ -2,7 +2,7 @@
 #This will take less than a gigabyte of memory
 #Only want to read from february 1 2007-february 2 2007
 
-#setwd("~/Dropbox/Coursera_DataAnalysisR/4ExploratoryDataAnalysis/ProgrammingAssignments/EnergyUsage")
+#setwd("~/Dropbox/Coursera_DataAnalysisR/4ExploratoryDataAnalysis/ProgrammingAssignments")
 classes=c("factor","factor","factor","factor","factor","factor","factor","factor","numeric")
 data=read.table("household_power_consumption.txt",
                 colClasses=classes,
@@ -18,14 +18,21 @@ data[,1]=as.Date(data[,1], format="%d/%m/%Y")
 data[,2]=strptime(data[,2],format="%H:%M,%S")
 #Right now, 3rd column is a factor and using as.numeric will 
 #return the factor level as a number
-#i.e. data[,3]=as.numeric(data[,3]) WILL NOT WORK
-data[,3:9]=as.numeric(as.character(data[,3:9]))
+#i.e. data[,3]=as.numeric(data[,3]) #WILL NOT WORK
+data[,3]=as.numeric(as.character(data[,3]))
+summary(data[,3])
+
+hist(data$Global_active_power,
+     main="Global Active Power",
+     xlab="Global Active Power (kilowatts)",
+     ylab="Frequency",
+     col="red1"
+     )
+dev.copy(png,file="plot1.png")
+dev.off()
 
 
-
-hist(data$Global_active_power)
-
-
+    
 ##Code that helped me figure out how to optimize reading the data into R
 
 #classes=sapply(data,class) #Used to figure out the classes of the columns
