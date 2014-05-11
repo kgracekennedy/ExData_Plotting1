@@ -28,22 +28,24 @@ data[,8]=as.numeric(as.character(data[,8]))
 data[,9]=as.numeric(as.character(data[,9]))
 #summary(data[,3])
 
+par(mfrow=c(1,1))
 with(data,plot(DaysTimes,data[,7],
                type="l",
                ylab="Energy sub metering",
                xlab=""
      )
 )
-with(lines(DaysTimes,data[,8],
+with(data,lines(DaysTimes,data[,8],
            col="red")
      )
-with(lines(DaysTimes,data[,9],
+with(data,lines(DaysTimes,data[,9],
            col="blue")
     )
 legend("topright",
        col=c("black","red","blue"),
        c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"),
-      lty=1
+      lty=1,
+      cex=.3
        )
 
 dev.copy(png,file="plot3.png")#Default is 480x480

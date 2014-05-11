@@ -14,27 +14,67 @@ data=read.table("household_power_consumption.txt",
                 sep=";")
 names=c("Date","Time","Global_active_power","Global_reactive_power", "Voltage","Global_intensity","Sub_metering_1", "Sub_metering_2", "Sub_metering_3")
 colnames(data)<-names
-data[,1]=as.Date(data[,1], format="%d/%m/%Y")
-data[,2]=strptime(data[,2],format="%H:%M,%S")
+DaysTimes=paste(data$Date,data$Time)
+#head(DaysTimes)
+#class(DaysTimes)
+DaysTimes=as.POSIXct(DaysTimes,format="%d/%m/%Y %H:%M:%S")
+#head(DaysTimes)
+
 #Right now, 3rd column is a factor and using as.numeric will 
 #return the factor level as a number
 #i.e. data[,3]=as.numeric(data[,3]) #WILL NOT WORK
 data[,3]=as.numeric(as.character(data[,3]))
-summary(data[,3])
+data[,4]=as.numeric(as.character(data[,4]))
+data[,5]=as.numeric(as.character(data[,5]))
+data[,7]=as.numeric(as.character(data[,7]))
+data[,8]=as.numeric(as.character(data[,8]))
+data[,9]=as.numeric(as.character(data[,9]))
+#summary(data[,3])
 
-par(mfrow=c(1,1))
-hist(data$Global_active_power,
-     main="Global Active Power",
-     xlab="Global Active Power (kilowatts)",
-     ylab="Frequency",
-     col="red1",
-     mar=c(4,4,2,1)
-     )
-dev.copy(png,file="plot1.png")#Default is 480x480
+par(mfrow=c(2,2),cex=0.65)
+plot(DaysTimes,data$Global_active_power,
+     type="l",
+     ylab="Global Active Power",
+     xlab=""
+)
+
+plot(DaysTimes,data[,5],
+     type="l",
+     ylab="Voltage",
+     xlab="datetime"
+)
+
+with(data,plot(DaysTimes,data[,7],
+               type="l",
+               ylab="Energy sub metering",
+               xlab=""
+)
+)
+with(data,lines(DaysTimes,data[,8],
+                col="red")
+)
+with(data,lines(DaysTimes,data[,9],
+                col="blue")
+)
+legend("topright",
+       col=c("black","red","blue"),
+       c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"),
+       lty=1,
+       cex=.3,
+       bty="n"
+)
+
+plot(DaysTimes,data[,4],
+     type="l",
+     ylab="Global_reactive_power",
+     xlab="datetime"
+)
+
+dev.copy(png,file="plot4.png")#Default is 480x480
 dev.off()
 
 
-    
+
 ##Code that helped me figure out how to optimize reading the data into R
 
 #classes=sapply(data,class) #Used to figure out the classes of the columns

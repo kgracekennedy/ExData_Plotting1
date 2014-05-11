@@ -26,6 +26,7 @@ DaysTimes=as.POSIXct(DaysTimes,format="%d/%m/%Y %H:%M:%S")
 data[,3]=as.numeric(as.character(data[,3]))
 #summary(data[,3])
 
+par(mfrow=c(1,1))
 plot(DaysTimes,data$Global_active_power,
      type="l",
      ylab="Global Active Power (kilowatts)",
